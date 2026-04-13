@@ -2,8 +2,11 @@
 ### Machine Learning Applications in Predictive Policing and Geospatial Hotspot Analysis
 
 > **Course:** INFO 6105 — Data Science Engineering Methods and Tools  
+
 > **Team:** 13 | **Members:** Amrin Bushra Taj · Anushika Balamurgan
+
 > **University:** Northeastern University | **April 2026**  
+
 > **Dataset:** Chicago Open Data Portal 2008–2017 | **Records:** 2,509,705
 
 ---
