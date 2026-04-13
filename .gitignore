@@ -1,0 +1,59 @@
+# ── Data files (too large for GitHub) ────────────────────────────────────────
+data/*.csv
+data/*.xlsx
+data/*.parquet
+data/*.json
+*.csv
+
+# ── Jupyter checkpoints ───────────────────────────────────────────────────────
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+
+# ── Python cache ──────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# ── Virtual environments ──────────────────────────────────────────────────────
+venv/
+env/
+.env/
+.venv/
+ENV/
+
+# ── OS files ──────────────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+desktop.ini
+
+# ── IDE / editor ──────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── Model artifacts (regenerate from notebook) ────────────────────────────────
+*.pkl
+*.joblib
+*.h5
+*.model
+
+# ── Generated outputs (regenerated on run) ────────────────────────────────────
+chicago_crime_heatmap.html
+
+# ── Environment variables ─────────────────────────────────────────────────────
+.env
+.env.local
+
+# ── Keep data folder structure ────────────────────────────────────────────────
+!data/.gitkeep
+!assets/.gitkeep
