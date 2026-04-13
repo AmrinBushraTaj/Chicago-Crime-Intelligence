@@ -2,7 +2,7 @@
 ### Machine Learning Applications in Predictive Policing and Geospatial Hotspot Analysis
 
 > **Course:** INFO 6105 — Data Science Engineering Methods and Tools  
-> **Team:** 13 | **Members:** Anushika Balamurgan · Amrin Bushra Taj  
+> **Team:** 13 | **Members:** Amrin Bushra Taj · Anushika Balamurgan
 > **University:** Northeastern University | **April 2026**  
 > **Dataset:** Chicago Open Data Portal 2008–2017 | **Records:** 2,509,705
 
@@ -242,7 +242,7 @@ This project acknowledges predictive policing limitations:
 
 ```bibtex
 @misc{chicago_crime_intelligence_2026,
-  author    = {Balamurgan, Anushika and Taj, Amrin Bushra},
+  author    = {Anushika Balamurgan and Amrin Bushra Taj},
   title     = {Chicago Crime Intelligence: Machine Learning Applications
                in Predictive Policing and Geospatial Hotspot Analysis},
   year      = {2026},
