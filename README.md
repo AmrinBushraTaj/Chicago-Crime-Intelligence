@@ -3,7 +3,7 @@
 
 > **Course:** INFO 6105 — Data Science Engineering Methods and Tools  
 > **Team 13** | Amrin Bushra Taj · Anushika Balamurgan  
-> **Northeastern University, Khoury College of Computer Sciences** | April 2026
+> **Northeastern University, College of Engineering** | April 2026
 
 ---
 
