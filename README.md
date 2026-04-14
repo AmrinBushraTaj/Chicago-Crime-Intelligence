@@ -1,261 +1,249 @@
-# Chicago Crime Intelligence
-### Machine Learning Applications in Predictive Policing and Geospatial Hotspot Analysis
+# 🔍 Chicago Crime Intelligence
+### A Dual-Task Classification and Hotspot Detection Study
 
 > **Course:** INFO 6105 — Data Science Engineering Methods and Tools  
-
-> **Team:** 13 | **Members:** Amrin Bushra Taj · Anushika Balamurgan
-
-> **University:** Northeastern University | **April 2026**  
-
-> **Dataset:** Chicago Open Data Portal 2008–2017 | **Records:** 2,509,705
+> **Team 13** | Amrin Bushra Taj · Anushika Balamurgan  
+> **Northeastern University, Khoury College of Computer Sciences** | April 2026
 
 ---
 
-## Overview
+## 📌 Overview
 
-A full-stack machine learning pipeline applied to the Chicago Open Data Portal crime dataset across three analytically distinct tasks:
+This project applies a comprehensive machine learning pipeline to **553,879 Chicago crime incident records (2008–2017)** to build a three-task crime intelligence platform:
 
-| Task | Type | Best Model | Best Score |
-|------|------|-----------|-----------|
-| **Task 1:** Arrest Outcome Prediction | Binary Classification | XGBoost | ROC-AUC: **0.8780** |
-| **Task 2:** Crime Hotspot Detection | Geospatial Clustering | DBSCAN (haversine) | Silhouette: **0.4001** |
-| **Task 3:** Crime Type Prediction | Multi-class Classification | XGBoost | Macro-F1: **0.9957** |
-
----
-
-## Dataset
-
-- **Kaggle:** https://www.kaggle.com/datasets/adelanseur/crimes-2001-to-present-chicago
-- **Original:** https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-Present/ijzp-q8t2
-- **Files needed:** `Chicago_Crimes_2008_to_2011.csv` + `Chicago_Crimes_2012_to_2017.csv`
-- **Size:** ~450 MB combined | 2,509,705 records | 23 columns
-
-> ⚠️ **CSV files are NOT included** (too large for GitHub). See `data/README.md` for download instructions.
+| Task | Type | Goal |
+|------|------|------|
+| **Task 1** — Arrest Prediction | Binary Classification | Predict whether an incident results in an arrest |
+| **Task 2** — Hotspot Detection | Unsupervised Clustering | Identify geographic crime concentration zones |
+| **Task 3** — Crime Type Prediction | Multi-class Classification | Predict the primary offense category (10 classes) |
 
 ---
 
-## Project Structure
+## 🏆 Key Results
+
+### Task 1 — Arrest Outcome Prediction
+
+| Model | Accuracy | ROC-AUC | Arrest F1 |
+|-------|----------|---------|-----------|
+| **XGBoost** ⭐ | 0.8765 | **0.8780** | **0.6964** |
+| Random Forest | 0.8768 | 0.8676 | 0.6913 |
+| Decision Tree | 0.8715 | 0.8680 | 0.6948 |
+| Logistic Regression | 0.7895 | 0.7181 | 0.5334 |
+
+### Task 2 — Geospatial Hotspot Detection
+
+| Algorithm | Result |
+|-----------|--------|
+| KMeans | 8 clusters · Silhouette Score: **0.401** |
+| DBSCAN | 1 dominant hotspot · Centre: 41.84°N, 87.67°W · Top crime: Theft (arrest rate 23.8%) |
+
+### Task 3 — Crime Type Prediction (10 classes)
+
+| Model | Accuracy | Macro-F1 |
+|-------|----------|----------|
+| **XGBoost** ⭐ | **0.9954** | **0.9946** |
+| Decision Tree | 0.9947 | 0.9937 |
+| Random Forest | 0.9702 | 0.9705 |
+| Logistic Regression | 0.7958 | 0.6955 |
+
+---
+
+## 📂 Repository Structure
 
 ```
 chicago-crime-intelligence/
 │
-├── notebooks/
-│   └── Chicago_Crime_Intelligence.ipynb   ← Full pipeline: Tasks 1, 2 & 3
-│
-├── reports/
-│   ├── Chicago_Crime_Intelligence_Report.docx   ← Final academic report
-│   └── Chicago_Crime_Presentation_Slides.pdf    ← Presentation slides
-│
-├── assets/
-│   └── chicago_crime_heatmap.html         ← Interactive map (generated on run)
-│
 ├── data/
-│   └── README.md                          ← Download instructions for CSVs
+│   ├── Chicago_Crimes_2008_to_2011.csv      # Source data (download separately)
+│   └── Chicago_Crimes_2012_to_2017.csv      # Source data (download separately)
 │
-├── requirements.txt
-├── .gitignore
+├── notebooks/
+│   └── Chicagi_Crime_Intelligence_Team_13.ipynb   # Main analysis notebook
+│
+├── outputs/
+│   ├── chicago_crime_heatmap.html           # Interactive Folium heatmap
+│   └── figures/                             # All saved plots
+│
+├── report/
+│   └── Chicago_Crime_Intelligence_Team_13.docx    # Full academic report
+│
 └── README.md
 ```
 
 ---
 
-## Quickstart
+## 🗃️ Dataset
+
+**Source:** [Chicago Data Portal — Crimes 2001 to Present](https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-Present/ijzp-q8t2)
+
+Two CSV files were merged to form the consolidated dataset:
+- `Chicago_Crimes_2008_to_2011.csv`
+- `Chicago_Crimes_2012_to_2017.csv`
+
+**Update the file paths** in the notebook before running:
+```python
+FILE_1 = '/path/to/Chicago_Crimes_2008_to_2011.csv'
+FILE_2 = '/path/to/Chicago_Crimes_2012_to_2017.csv'
+```
+
+| Property | Value |
+|----------|-------|
+| Total records | 553,879 |
+| Attributes | 23 |
+| Memory footprint | ~421 MB |
+| Time span | 2008–2017 |
+| Missing coords | 3.90% (excluded from clustering) |
+
+---
+
+## ⚙️ Setup & Installation
+
+### Prerequisites
+- Python 3.10+
+- Jupyter Notebook or Google Colab
+
+### Install dependencies
 
 ```bash
-# 1. Clone
-git clone https://github.com/YOUR_USERNAME/chicago-crime-intelligence.git
-cd chicago-crime-intelligence
-
-# 2. Install dependencies
-pip install -r requirements.txt
-
-# 3. Download CSVs from Kaggle → place in data/
-#    Then update Cell 6 in the notebook:
-FILE_1 = 'data/Chicago_Crimes_2008_to_2011.csv'
-FILE_2 = 'data/Chicago_Crimes_2012_to_2017.csv'
-
-# 4. Run
-jupyter notebook notebooks/Chicago_Crime_Intelligence.ipynb
+pip install seaborn xgboost shap folium scikit-learn pandas numpy matplotlib imbalanced-learn
 ```
 
-> Or open directly in **Google Colab** — Cell 0 auto-installs all dependencies and Cell 1 mounts Google Drive.
+Or run the first cell of the notebook which handles installation automatically:
 
----
-
-## Methodology
-
-### Pipeline
-```
-Raw CSV Files (2,509,705 records)
-        ↓
-Step 1: Import Libraries
-Step 2: Data Ingestion & Merging (2 CSV files → 1 DataFrame)
-Step 3: EDA (crime distributions, temporal patterns, arrest rates)
-Step 4: Data Cleaning (drop irrelevant cols, filter top-10 crime types)
-Step 5: Feature Engineering (label encode, extract datetime features)
-Step 6: Preprocessing (sample 150k, scale, 80/20 split)
-        ↓
-┌──────────────────┬─────────────────┬──────────────────┐
-│     TASK 1       │     TASK 2      │     TASK 3       │
-│ Arrest Outcome   │  Geospatial     │  Crime Type      │
-│ Binary Classif.  │  Clustering     │  Multi-class     │
-│ 4 ML Models      │ DBSCAN+KMeans   │  4 ML Models     │
-└──────────────────┴─────────────────┴──────────────────┘
-        ↓
-Step 10: SHAP Explainability (Tasks 1 & 3)
-Step 11: Final Summary & Conclusion
-```
-
-### Features Used (Both Tasks 1 & 3)
-
-| Category | Features |
-|----------|----------|
-| Temporal | Hour, DayOfWeek, Month, Year |
-| Spatial | Latitude, Longitude, District, Ward, Beat, Community Area |
-| Categorical | Location Description (encoded), Domestic |
-| Classification | FBI Code (encoded) |
-
-### Imbalance Handling — Task 1
-
-| Technique | Applied To |
-|-----------|-----------|
-| `class_weight='balanced'` | Logistic Regression, Decision Tree |
-| `class_weight='balanced_subsample'` | Random Forest |
-| `scale_pos_weight=neg/pos ratio` | XGBoost |
-| SMOTE + RandomUnderSampler | XGBoost training data |
-| Precision-Recall threshold tuning | All 4 models |
-
----
-
-## Results
-
-### Task 1 — Arrest Prediction
-*Test set: 30,000 records | 22,885 No Arrest (76.3%) / 7,115 Arrest (23.7%)*
-
-| Model | Accuracy | ROC-AUC | Arrest Precision | Arrest Recall | Arrest F1 |
-|-------|----------|---------|-----------------|--------------|----------|
-| **XGBoost** | **0.8806** | **0.8780** | 0.90 | 0.56 | **0.69** |
-| Decision Tree | 0.8802 | 0.8710 | 0.92 | 0.55 | 0.68 |
-| Random Forest | 0.8755 | 0.8586 | 0.95 | 0.50 | 0.66 |
-| Logistic Regression | 0.7689 | 0.7131 | 0.54 | 0.18 | 0.27 |
-
-**SHAP Top Features:** `Hour` > `District` > `Location Description` > `FBI Code` > `Beat`
-
----
-
-### Task 2 — Geospatial Hotspot Detection
-*50,000 GPS coordinate points*
-
-| Algorithm | Config | Result |
-|-----------|--------|--------|
-| **DBSCAN** | haversine, eps=0.0008 (~88m), min_samples=50 | 1 dense cluster, 0 noise |
-| **KMeans** | K=8, n_init=10 | Silhouette = 0.4001 |
-
-**Primary Hotspot:** 41.84°N, 87.67°W — Chicago central corridor (Loop / Near South Side)  
-**Dominant crime:** THEFT | **Arrest rate in hotspot:** 23.7%
-
----
-
-### Task 3 — Crime Type Prediction
-*Test set: 30,000 records | 10 crime classes*
-
-| Model | Accuracy | Macro-F1 |
-|-------|----------|---------|
-| **XGBoost** | **99.65%** | **0.9957** |
-| Decision Tree | 99.58% | 0.9950 |
-| Random Forest | 93.51% | 0.9157 |
-| Logistic Regression | 80.02% | 0.6949 |
-
-**SHAP Top Features:** `Location Description` > `FBI Code` > `District` > `Hour` > `Beat`
-
----
-
-## Model Configurations
-
-### Task 1 Models
 ```python
-# Logistic Regression
-LogisticRegression(max_iter=500, class_weight='balanced', n_jobs=-1)
-
-# Decision Tree
-DecisionTreeClassifier(max_depth=12, class_weight='balanced', min_samples_leaf=20)
-
-# Random Forest
-RandomForestClassifier(n_estimators=100, max_depth=12,
-                       class_weight='balanced_subsample', min_samples_leaf=10)
-
-# XGBoost (trained on SMOTE-resampled data)
-XGBClassifier(n_estimators=200, max_depth=6, learning_rate=0.1,
-              subsample=0.8, colsample_bytree=0.8,
-              scale_pos_weight=RATIO, eval_metric='aucpr')
+!pip install -q seaborn xgboost shap folium scikit-learn pandas numpy matplotlib imbalanced-learn
 ```
 
-### Task 3 Models
-```python
-# Decision Tree
-DecisionTreeClassifier(max_depth=15, min_samples_leaf=10)
+### Run the notebook
 
-# Random Forest
-RandomForestClassifier(n_estimators=100, max_depth=15,
-                       class_weight='balanced_subsample', min_samples_leaf=5)
+```bash
+jupyter notebook notebooks/Chicagi_Crime_Intelligence_Team_13.ipynb
+```
 
-# XGBoost
-XGBClassifier(n_estimators=200, max_depth=6, learning_rate=0.1,
-              subsample=0.8, colsample_bytree=0.8, eval_metric='mlogloss')
+Or open directly in [Google Colab](https://colab.research.google.com/) and upload the notebook + data files.
+
+---
+
+## 🔬 Methodology
+
+### Feature Engineering
+13 features used across all tasks:
+
+| Feature | Description |
+|---------|-------------|
+| `Hour`, `DayOfWeek`, `Month`, `Year` | Extracted from incident timestamp |
+| `Latitude`, `Longitude` | Geographic coordinates |
+| `Domestic` | Boolean encoded to 0/1 |
+| `Location Description` | Label-encoded (140 categories) |
+| `FBI Code`, `IUCR` | Label-encoded crime classification codes |
+| `Beat`, `District`, `Ward` | CPD administrative subdivisions |
+
+### Class Imbalance Handling (Task 1)
+- **SMOTE** oversampling of minority (Arrest) class
+- **RandomUnderSampler** on majority class  
+- Combined pipeline yields ~1.25:1 ratio (from original 3.19:1)
+- Per-model **threshold optimization** via Precision-Recall F1 maximization
+
+### Geospatial Clustering (Task 2)
+- **KMeans** on StandardScaler-normalized coordinates; K=8 via Elbow method
+- **DBSCAN** with Haversine metric (eps ≈ 88m, min_samples=50) via ball_tree
+- Interactive heatmap generated with **Folium** on CartoDB dark-matter tiles
+
+### Explainability
+- **SHAP TreeExplainer** applied to best XGBoost models for Tasks 1 & 3
+- Summary bar plots + beeswarm plots over 500-instance test subsamples
+- Key drivers: geographic coordinates, hour of day, FBI/IUCR codes
+
+---
+
+## 📊 Pipeline Overview
+
+```
+Raw CSVs (2008–2011, 2012–2017)
+        │
+        ▼
+   Data Merging & Inspection
+        │
+        ▼
+   Exploratory Data Analysis
+   (crime types, temporal heatmaps, arrest rates, locations)
+        │
+        ▼
+   Cleaning & Feature Engineering
+   (drop irrelevant cols, parse datetime, label encode)
+        │
+        ├──────────────────────┬──────────────────────┐
+        ▼                      ▼                      ▼
+   Task 1                 Task 2                 Task 3
+   Binary Classification  Geospatial Clustering  Multi-class Classification
+   (Arrest Prediction)    (KMeans + DBSCAN)      (Crime Type)
+        │                      │                      │
+        ▼                      ▼                      ▼
+   SMOTE + Threshold      Elbow Method           4 Models Trained
+   Optimization           Silhouette Score       Macro-F1 Evaluation
+        │                      │                      │
+        └──────────────────────┴──────────────────────┘
+                               │
+                               ▼
+                      SHAP Explainability
+                   (Tasks 1 & 3 — XGBoost)
 ```
 
 ---
 
-## Generated Outputs
+## 📈 EDA Highlights
 
-Running the full notebook produces:
-
-| Output | Location | Description |
-|--------|----------|-------------|
-| `chicago_crime_heatmap.html` | `assets/` | Interactive Folium heatmap |
-| ROC + PR Curves | Notebook Cell 37 | All 4 Task 1 models |
-| Confusion Matrix | Notebook Cell 51 | Task 3 Decision Tree |
-| SHAP Summary Plots | Notebook Cells 59–61 | Bar + beeswarm for Tasks 1 & 3 |
-| Final Summary | Notebook Cell 63 | All results printed |
+- **Top crime types:** Theft (115,656) > Battery (102,195) > Criminal Damage (63,571) > Narcotics (60,824)
+- **Arrest rate:** 26.7% overall — highest for Narcotics (~68%), lowest for Theft/Criminal Damage (<15%)
+- **Temporal peaks:** Crime spikes between 18:00–02:00; Fridays and Saturdays highest
+- **Crime trend:** Consistent year-over-year decline from ~75K incidents (2009) to ~40K (2017)
 
 ---
 
-## Dependencies
+## 🧠 SHAP Findings
 
-```
-pandas, numpy, scikit-learn, xgboost, imbalanced-learn,
-shap, folium, matplotlib, seaborn, jupyter
-```
+**Task 1 (Arrest Prediction):** Latitude and Longitude are the top predictors — specific Chicago zones (South/West Side) have systematically higher arrest probabilities. Hour of day shows a strong negative contribution for late-night incidents. The `Domestic` flag consistently raises arrest probability, consistent with Illinois mandatory arrest statutes.
 
-Full list in [`requirements.txt`](requirements.txt).
+**Task 3 (Crime Type):** IUCR and FBI Code dominate predictions due to their definitional relationship with Primary Type. Among contextual features, geographic coordinates and Hour of Day are the strongest discriminators between crime categories.
 
 ---
 
-## Ethical Statement
+## ⚠️ Limitations
 
-This project acknowledges predictive policing limitations:
-- Historical crime data reflects policing intensity, not ground truth
-- No demographic or racial features used — all signal from temporal, spatial, and incident-type attributes
-- SHAP values enable full audit of individual predictions
-- Outputs are decision **support** tools only — not autonomous enforcement triggers
-
----
-
-## Citation
-
-```bibtex
-@misc{chicago_crime_intelligence_2026,
-  author    = {Anushika Balamurgan and Amrin Bushra Taj},
-  title     = {Chicago Crime Intelligence: Machine Learning Applications
-               in Predictive Policing and Geospatial Hotspot Analysis},
-  year      = {2026},
-  note      = {INFO 6105 Final Project, Team 13, Northeastern University},
-  url       = {https://github.com/YOUR_USERNAME/chicago-crime-intelligence}
-}
-```
+- **No temporal holdout:** Random splitting may overestimate prospective performance; a train-2008–2015 / test-2016–2017 split is recommended for deployment validation.
+- **Definitional features in Task 3:** IUCR and FBI Code are structurally linked to the crime type target, inflating accuracy figures.
+- **DBSCAN resolution:** A single cluster at 88m scale reflects city-wide density; finer-grained analysis requires smaller epsilon or HDBSCAN.
+- **Missing covariates:** Socioeconomic, weather, and prior-history features are absent.
 
 ---
 
-## License
+## ⚖️ Ethical Considerations
 
-Academic use only. Dataset subject to [Chicago Police Department data terms](https://data.cityofchicago.org/).
+Predictive models trained on historical arrest data encode past policing decisions, not just underlying crime rates. Deployment of these models without bias audits risks amplifying racial and socioeconomic disparities. Any operational use should include:
+- Disaggregated fairness evaluations (equalized odds, calibration by community area demographics)
+- Community consultation and transparency
+- Ongoing monitoring for disparate impact and concept drift
+
+---
+
+## 📄 References
+
+- Chen & Guestrin (2016). XGBoost: A Scalable Tree Boosting System. *KDD 2016.*
+- Lundberg & Lee (2017). A Unified Approach to Interpreting Model Predictions. *NeurIPS 2017.*
+- Ester et al. (1996). A Density-Based Algorithm for Discovering Clusters. *KDD 1996.*
+- Chawla et al. (2002). SMOTE: Synthetic Minority Over-sampling Technique. *JAIR.*
+- Sherman, Gartin & Buerger (1989). Hot Spots of Predatory Crime. *Criminology.*
+- Chicago Data Portal. Crimes — 2001 to Present. https://data.cityofchicago.org
+
+---
+
+## 👥 Team
+
+| Name | Institution |
+|------|-------------|
+| Amrin Bushra Taj | Northeastern University |
+| Anushika Balamurgan | Northeastern University |
+
+---
+
+*INFO 6105 — Data Science Engineering Methods and Tools | Northeastern University | April 2026*
